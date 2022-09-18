@@ -1,8 +1,10 @@
+from django.conf import settings
 from django.db import models
 
 
 class Order(models.Model):
-    client_id = models.PositiveIntegerField()
+    client_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    client_number = models.PositiveIntegerField()
     address_city = models.CharField(max_length=50)
     address_street = models.CharField(max_length=100)
     price = models.PositiveIntegerField()
