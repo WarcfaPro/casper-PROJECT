@@ -3,7 +3,8 @@ from django.db import models
 
 
 class Order(models.Model):
-    client_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    company_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    company_type = models.CharField(max_length=10)
     company_name = models.CharField(max_length=100)
     client_number = models.PositiveIntegerField()
     address_city = models.CharField(max_length=50)
