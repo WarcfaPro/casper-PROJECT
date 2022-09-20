@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -16,3 +17,10 @@ class Order(models.Model):
     is_payments = models.BooleanField(default=False)
     data = models.DateTimeField(auto_now_add=True)
     data_complete = models.DateTimeField(auto_now=True)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    type_company = models.TextField(max_length=500, blank=True)
+    company_name = models.CharField(max_length=30, blank=True)
+    client_number = models.PositiveIntegerField()
