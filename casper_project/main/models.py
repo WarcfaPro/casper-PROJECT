@@ -24,3 +24,5 @@ class Profile(models.Model):
     type_company = models.TextField(max_length=500, blank=True)
     company_name = models.CharField(max_length=30, blank=True)
     client_number = models.PositiveIntegerField()
+    client_email = models.EmailField()
+    client_inn = models.PositiveIntegerField()
