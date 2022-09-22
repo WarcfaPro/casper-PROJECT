@@ -26,3 +26,5 @@ class Profile(models.Model):
     client_number = models.PositiveIntegerField()
     client_email = models.EmailField()
     client_inn = models.PositiveIntegerField()
+    is_client = models.BooleanField(default=True)
+    is_verify = models.BooleanField(default=False)
