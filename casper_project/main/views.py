@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm
+from .forms import RegForm
 from django.contrib import messages
 
 
@@ -9,15 +9,16 @@ def index(request):
 
 def register(request):
     if request.method == 'POST':
-        user_form = RegistrationForm(request.POST)
+        user_form = RegForm(data=request.POST)
         if user_form.is_valid():
             # Create a new user object but avoid saving it yet
+            print(user_form)
             user_form.save()
-            username = user_form.cleaned_data.get('username')
-            messages.success(request, f'Создан аккаунт {username}!')
+            company_name = user_form.cleaned_data.get('company_name')
+            messages.success(request, f'Создан аккаунт {company_name}!')
             return redirect('home')
     else:
-        user_form = RegistrationForm()
+        user_form = RegForm()
     return render(request, 'main/register.html', {'user_form': user_form})
 
 

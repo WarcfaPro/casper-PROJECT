@@ -7,17 +7,18 @@ from django.contrib.auth.models import PermissionsMixin
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    company_type = models.CharField(max_length=10)
-    company_name = models.CharField(max_length=255, unique=True)
-    email = models.EmailField(null=False, unique=True)
-    phone = models.CharField(max_length=32, null=True, blank=True)
-    inn = models.CharField(max_length=12, null=False, unique=True)
-    data_registration = models.DateTimeField(auto_now_add=True)
-    is_carrier = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-    is_verified = models.BooleanField(default=False)
+    company_type_ = (('ИП', 'ИП'), ('ООО', 'ООО'))
+    company_type = models.CharField(max_length=10, choices=company_type_, verbose_name='Типом организации')
+    company_name = models.CharField(max_length=255, unique=True, verbose_name='Названием организации')
+    email = models.EmailField(null=False, unique=True, verbose_name='Email')
+    phone = models.CharField(max_length=32, null=True, blank=True, verbose_name='Телефоном')
+    inn = models.CharField(max_length=12, null=False, unique=True, verbose_name='ИНН организации')
+    data_registration = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
+    is_carrier = models.BooleanField(default=False, verbose_name='Перевозчик')
+    is_active = models.BooleanField(default=False, verbose_name='Активен')
+    is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
+    is_superuser = models.BooleanField(default=False, verbose_name='Суперпользователь')
+    is_verified = models.BooleanField(default=False, verbose_name='Верифицирован')
 
     object = UserManager()
 
@@ -25,8 +26,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
 
 class Order(models.Model):
