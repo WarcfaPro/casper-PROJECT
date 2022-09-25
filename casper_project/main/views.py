@@ -1,7 +1,11 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import RegForm, LogForm
+
 from django.contrib import messages
+
+from .forms import RegForm, LoginForm
 
 
 def index(request):
@@ -16,24 +20,36 @@ def register(request):
             user_form.save()
             company_name = user_form.cleaned_data.get('company_name')
             messages.success(request, f'Создан аккаунт {company_name}!')
-            return redirect('home')
+            cd = user_form.cleaned_data
+            print(cd)
+            user = authenticate(request, username=cd['email'], password=cd['password1'])
+            print(user)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
     else:
         user_form = RegForm()
-    return render(request, 'main/register.html', {'user_form': user_form})
+    return render(request, 'main/register.html', {'user_form': user_form, 'active_reg': 'active'})
 
 
-def login(request):
+def loginUser(request):
     if request.method == 'POST':
-        user_loginform = LogForm(data=request.POST)
-        if user_loginform.is_valid():
-            # Create a new user object but avoid saving it yet
-            user_loginform.save()
-            company_name = user_loginform.cleaned_data.get('company_name')
-            messages.success(request, f'Создан аккаунт {company_name}!')
-            return redirect('home')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            print(cd)
+            user = authenticate(request, username=cd['email'], password=cd['password'])
+            print(user)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.warning(request, f'Проверьте введенные вами данные!')
+                form = LoginForm()
+                return render(request, 'main/login.html', {'form': form, 'active_login': 'active'})
     else:
-        user_loginform = LogForm()
-    return render(request, 'main/login.html', {'user_form': user_loginform})
+        form = LoginForm()
+    return render(request, 'main/login.html', {'form': form, 'active_login': 'active'})
 
 
 def logout_user(request):

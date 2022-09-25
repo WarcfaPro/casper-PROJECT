@@ -23,12 +23,10 @@ class RegForm(UserCreationForm):
         fields = ('company_type', 'company_name', 'phone', 'email', 'inn')
 
 
-class LogForm(AuthenticationForm):
-    email = forms.EmailField(label='Введите email', widget=forms.EmailInput(attrs={'class:': 'form_input'}))
-    password1 = forms.CharField(label='Введите пароль', widget=forms.PasswordInput(attrs={'class:': 'form_input'}))
-    class Meta:
-        model = User
-        fields = ('email', 'password1')
+class LoginForm(forms.Form):
+    email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class:': 'form_input'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class:': 'form_input'}))
+
 
 
 class UserChangeForm(UserChangeForm):

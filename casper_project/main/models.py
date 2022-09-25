@@ -15,7 +15,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     inn = models.CharField(max_length=12, null=False, unique=True, verbose_name='ИНН организации')
     data_registration = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
     is_carrier = models.BooleanField(default=False, verbose_name='Перевозчик')
-    is_active = models.BooleanField(default=False, verbose_name='Активен')
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
     is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
     is_superuser = models.BooleanField(default=False, verbose_name='Суперпользователь')
     is_verified = models.BooleanField(default=False, verbose_name='Верифицирован')
