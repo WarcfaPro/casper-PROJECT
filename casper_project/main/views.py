@@ -17,9 +17,7 @@ def register(request):
             company_name = user_form.cleaned_data.get('company_name')
             messages.success(request, f'Создан аккаунт {company_name}!')
             cd = user_form.cleaned_data
-            print(cd)
             user = authenticate(request, username=cd['email'], password=cd['password1'])
-            print(user)
             if user is not None:
                 login(request, user)
                 return redirect('home')
@@ -33,9 +31,7 @@ def loginUser(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            print(cd)
             user = authenticate(request, username=cd['email'], password=cd['password'])
-            print(user)
             if user is not None:
                 login(request, user)
                 return redirect('home')
