@@ -1,22 +1,24 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm
+from .forms import RegistrationForm
 from django.contrib import messages
 
 
 def index(request):
     return render(request, 'main/index.html', {'title': 'Главная страница', 'active_home': 'active'})
 
+
 def register(request):
-	if request.method == 'POST':
-    	form = UserRegisterForm(request.POST)
-    	if form.is_valid():
-        	form.save()
-        	username = form.cleaned_data.get('username')
-        	messages.success(request, f'Создан аккаунт {username}!')
-        	return redirect('blog-home')
-	else:
-    	form = UserRegisterForm()
-	return render(request, 'users/register.html', {'form': form})
+    if request.method == 'POST':
+        user_form = RegistrationForm(request.POST)
+        if user_form.is_valid():
+            # Create a new user object but avoid saving it yet
+            user_form.save()
+            username = user_form.cleaned_data.get('username')
+            messages.success(request, f'Создан аккаунт {username}!')
+            return redirect('home')
+    else:
+        user_form = RegistrationForm()
+    return render(request, 'main/register.html', {'user_form': user_form})
 
 
 def order(request):
