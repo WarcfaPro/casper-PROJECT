@@ -12,7 +12,6 @@ def register(request):
     if request.method == 'POST':
         user_form = RegForm(data=request.POST)
         if user_form.is_valid():
-            # Create a new user object but avoid saving it yet
             user_form.save()
             company_name = user_form.cleaned_data.get('company_name')
             messages.success(request, f'Создан аккаунт {company_name}!')
