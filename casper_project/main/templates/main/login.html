@@ -4,9 +4,9 @@
 <div class="teams_form">
   <div class="test">
     <form action="{% url 'login' %}" method='POST' class="form-inline my-2 my-lg-0">
-        {{ user_form.as_ul }}
+        {{ user_loginform.as_ul }}
         {% csrf_token %}
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Зарегистрироваться</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Войти</button>
     </form>
   </div>
 </div>

@@ -14,8 +14,14 @@
 
       <ul class="nav nav-pills">
         <li class="nav-item"><a href="{% url 'home' %}" class="nav-link {{ active_home }}" aria-current="page">Главная</a></li>
+          {% if request.user.is_authenticated %}
         <li class="nav-item"><a href="{% url 'order' %}" class="nav-link {{ active_order }}">Оформить заказ</a></li>
-        <li class="nav-item"><a href="{% url 'account' %}" class="nav-link {{ active_account }}">Профиль</a></li>
+        <li class="nav-item"><a href="{% url 'account' %}" class="nav-link {{ active_account }}">Личный кабинет</a></li>
+        <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Выйти</a></li>
+          {% else %}
+        <li class="nav-item"><a href="{% url 'register' %}" class="nav-link {{ active_account }}">Регистрация</a></li>
+        <li class="nav-item"><a href="{% url 'login' %}" class="nav-link {{ active_account }}">Вход</a></li>
+          {% endif %}
       </ul>
 </header>
 {% if messages %}

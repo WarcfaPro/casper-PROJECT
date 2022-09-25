@@ -1,5 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django import forms
+from django.urls import reverse_lazy
 
 from .models import User
 
@@ -20,6 +21,14 @@ class RegForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('company_type', 'company_name', 'phone', 'email', 'inn')
+
+
+class LogForm(AuthenticationForm):
+    email = forms.EmailField(label='Введите email', widget=forms.EmailInput(attrs={'class:': 'form_input'}))
+    password1 = forms.CharField(label='Введите пароль', widget=forms.PasswordInput(attrs={'class:': 'form_input'}))
+    class Meta:
+        model = User
+        fields = ('email', 'password1')
 
 
 class UserChangeForm(UserChangeForm):
