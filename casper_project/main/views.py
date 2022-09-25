@@ -1,10 +1,6 @@
 from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
 from django.contrib import messages
-
 from .forms import RegForm, LoginForm
 
 
@@ -63,7 +59,3 @@ def order(request):
 
 def account(request):
     return render(request, 'main/account.html', {'title': 'Личный кабинет', 'active_account': 'active'})
-# def login(request):
-# return render(request, 'main/login.html', {'title': 'Вход'})
-# def registration(request):
-# return render(request, 'main/reg.html', {'title': 'Регистрация'})
