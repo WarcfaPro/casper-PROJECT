@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/casper_project/dadata-py" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/casper_project/src/django-dadata" vcs="Git" />
   </component>
 </project>

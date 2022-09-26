@@ -1,7 +1,7 @@
 from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import RegForm, LoginForm
+from .forms import RegForm, LoginForm, add_Order
 
 
 def index(request):
@@ -9,6 +9,9 @@ def index(request):
 
 
 def register(request):
+    if request.user.is_authenticated:
+        messages.warning(request, 'Вы уже вошли!')
+        return redirect('home')
     if request.method == 'POST':
         user_form = RegForm(data=request.POST)
         if user_form.is_valid():
@@ -26,6 +29,9 @@ def register(request):
 
 
 def loginUser(request):
+    if request.user.is_authenticated:
+        messages.warning(request, 'Вы уже вошли!')
+        return redirect('home')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -49,7 +55,8 @@ def logout_user(request):
 
 
 def order(request):
-    return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active'})
+    order_form = add_Order()
+    return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active', 'order_form': order_form})
 
 
 def account(request):

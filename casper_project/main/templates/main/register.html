@@ -1,13 +1,27 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
+{% if request.user.is_authenticated %}
+<h1>SORRY YOU is_authenticate</h1>
+{% else %}
+
 <div class="teams_form">
-  <div class="test">
-    <form action="{% url 'register' %}" method='POST' class="form-inline my-2 my-lg-0">
-        {{ user_form.as_ul }}
+  <div class="container col-4">
+    <form action="{% url 'register' %}" method='POST' class="form-control">
+        {% for field in user_form %}
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">{{ field.label }}</label>
+                {{ field }}
+            </div>
+        {% endfor %}
+
         {% csrf_token %}
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Зарегистрироваться</button>
+            <div class=" container w-50">
+                <button class="btn btn-outline-success w-100" type="submit">Зарегистрироваться</button>
+            </div>
     </form>
   </div>
 </div>
+{% endif %}
+
 {% endblock %}
