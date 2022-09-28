@@ -1,4 +1,3 @@
-from dadata.widgets import DadataAddressWidget
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django import forms
 from .models import User, Order
@@ -29,19 +28,9 @@ class LoginForm(forms.Form):
 
 
 class add_Order(forms.ModelForm):
-    address_city = forms.CharField(widget=DadataAddressWidget())
     class Meta:
         model = Order
-        widgets = {
-            'address': DadataAddressWidget(attrs={
-                "data-linked-fields": {
-                    "lat": "#id_lat",
-                    "lon": "#id_lon"
-                }
-            })
-        }
         fields = '__all__'
-
 
 
 class UserChangeForm(UserChangeForm):
