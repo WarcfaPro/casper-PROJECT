@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
+
 from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
-from .managers import UserManager
-from django.db import models
 from django.contrib.auth.models import PermissionsMixin
+from django.db import models
+
+from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):

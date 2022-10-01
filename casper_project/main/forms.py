@@ -1,7 +1,7 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django import forms
-from .models import User, Order
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
+from .models import User, Order
 
 
 class RegForm(UserCreationForm):
