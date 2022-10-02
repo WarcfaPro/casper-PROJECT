@@ -28,6 +28,7 @@ class LoginForm(forms.Form):
 
 
 class add_Order(forms.ModelForm):
+    company_name = forms.CharField()
     class Meta:
         model = Order
         fields = '__all__'
