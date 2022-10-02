@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
 from .forms import RegForm, LoginForm, add_Order
@@ -83,8 +84,12 @@ def account(request):
 
 
 def order_list(request):
-    paginate_by = 10
-    p = Order.objects.all()
+    paginate_by = 2
+    p = Order.objects.all().filter(carrier_id=None, is_complete=False)
+    paginator = Paginator(p, paginate_by)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, 'main/order_list.html', {'title': 'Список заказов',
-                                                    'active_order_list': 'active', 'orders': p.filter(carrier_id=None)})
+                                                    'active_order_list': 'active',
+                                                    'page_obj': page_obj})

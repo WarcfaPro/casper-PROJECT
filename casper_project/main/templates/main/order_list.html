@@ -3,7 +3,7 @@
 
 {% block content %}
 
-{%for item in orders%}
+{%for item in page_obj%}
 <div class="form-control">
     <div class="">
         <ul>
@@ -14,6 +14,14 @@
         </ul>
     </div>
 </div>
-
 {%endfor%}
+<ul>
+    {%for page in page_obj.paginator.page_range%}
+    <li>
+        <a href="?page={{page}}">{{page}}</a>
+    </li>
+    {%endfor%}
+</ul>
+
+
 {% endblock %}
