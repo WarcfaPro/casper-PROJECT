@@ -84,12 +84,13 @@ def account(request):
 
 
 def order_list(request):
-    paginate_by = 2
+    paginate_by = 10
     p = Order.objects.all().filter(carrier_id=None, is_complete=False).order_by('-id')
     paginator = Paginator(p, paginate_by)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
+    page_paginator = page_obj.has_other_pages()
     return render(request, 'main/order_list.html', {'title': 'Список заказов',
                                                     'active_order_list': 'active',
-                                                    'page_obj': page_obj})
+                                                    'page_obj': page_obj,
+                                                    'page_paginator': page_paginator})

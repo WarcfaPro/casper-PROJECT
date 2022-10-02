@@ -15,13 +15,5 @@
     </div>
 </div>
 {%endfor%}
-<ul>
-    {%for page in page_obj.paginator.page_range%}
-    <li>
-        <a href="?page={{page}}">{{page}}</a>
-    </li>
-    {%endfor%}
-</ul>
-
 
 {% endblock %}
