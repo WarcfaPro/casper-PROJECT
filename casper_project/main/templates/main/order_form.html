@@ -9,7 +9,7 @@
         {% if field == order_form.company_name %}
             <div class="mb-3">
                 <label  class="form-label">{{ field.label }}</label>
-                <input id="id_company_name" type="text" name="company_name" maxlength="100" required="" value="{{full_name}}">
+                <input id="id_company_name" type="text" name="company_name" maxlength="100" required="" value="{{request.user.company_name}}">
             </div>
         {% else %}
             <div class="mb-3">

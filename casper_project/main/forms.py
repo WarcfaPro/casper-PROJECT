@@ -5,9 +5,6 @@ from .models import User, Order
 
 
 class RegForm(UserCreationForm):
-    company_type_ = (('ИП', 'ИП'), ('ООО', 'ООО'))
-    company_type = forms.CharField(label='Выберите тип организации', widget=forms.Select(choices=company_type_, attrs={
-        'class': 'form-select'}))
     company_name = forms.CharField(label='Введите название организации',
                                    widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Введите email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
@@ -19,7 +16,7 @@ class RegForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('company_type', 'company_name', 'phone', 'email', 'inn')
+        fields = ('inn', 'company_name', 'phone', 'email')
 
 
 class LoginForm(forms.Form):
@@ -44,7 +41,7 @@ class add_Order(forms.ModelForm):
         fields = ('company_name', 'address_city', 'address_street', 'address_city_to', 'address_street_to', 'price')
 
 
-class UserChangeForm(UserChangeForm):
+class UserChangeUpdate(UserChangeForm):
     class Meta:
         model = User
         fields = ('email',)

@@ -7,8 +7,6 @@ from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    company_type_ = (('ИП', 'ИП'), ('ООО', 'ООО'))
-    company_type = models.CharField(max_length=10, choices=company_type_, verbose_name='Типом организации')
     company_name = models.CharField(max_length=255, unique=True, verbose_name='Названием организации')
     email = models.EmailField(null=False, unique=True, verbose_name='Email')
     phone = models.CharField(max_length=32, null=True, blank=True, verbose_name='Телефоном')
@@ -32,7 +30,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Order(models.Model):
     company_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_author')
-    company_name = models.CharField(max_length=100)
+    company_name = models.OneToOneField(User, on_delete=models.PROTECT)
     address_city = models.CharField(max_length=50)
     address_street = models.CharField(max_length=100)
     full_address = models.CharField(max_length=150)

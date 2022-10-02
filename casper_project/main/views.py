@@ -59,7 +59,6 @@ def logout_user(request):
 
 @login_required()
 def order(request):
-    full_company_name = _get_full_company_name(request)
     if request.method == 'POST':
         order_form = add_Order(request.POST)
         if order_form.is_valid():
@@ -70,7 +69,7 @@ def order(request):
             messages.warning(request, f'Проверьте введенные вами данные!')
             order_form = add_Order(request.POST)
             return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active',
-                                                            'order_form': order_form, 'full_name': full_company_name})
+                                                            'order_form': order_form})
     else:
         order_form = add_Order()
     return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active',
