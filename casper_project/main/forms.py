@@ -23,15 +23,25 @@ class RegForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class:': 'form_input'}))
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class:': 'form_input'}))
+    email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class': 'form_input'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form_input'}))
 
 
 class add_Order(forms.ModelForm):
-    company_name = forms.CharField()
+    company_name = forms.CharField(label='Название организации', max_length=100)
+    address_city = forms.CharField(label='Город от куда ', max_length=100,
+                                   widget=forms.TextInput(attrs={'id': 'city', 'class': 'form_input'}))
+    address_street = forms.CharField(label='Улица', max_length=100,
+                                     widget=forms.TextInput(attrs={'id': 'street', 'class': 'form_input'}))
+    address_city_to = forms.CharField(label='Город куда', max_length=50,
+                                      widget=forms.TextInput(attrs={'id': 'city_to', 'class': 'form_input'}))
+    address_street_to = forms.CharField(label='Улица', max_length=100,
+                                        widget=forms.TextInput(attrs={'id': 'street_to', 'class': 'form_input'}))
+    price = forms.CharField(label='стоимость', max_length=100)
+
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ('company_name', 'address_city', 'address_street', 'address_city_to', 'address_street_to', 'price')
 
 
 class UserChangeForm(UserChangeForm):

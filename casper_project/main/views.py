@@ -1,8 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .forms import RegForm, LoginForm, add_Order
+from .service import _get_full_company_name
 
 
 def index(request):
@@ -55,10 +57,14 @@ def logout_user(request):
     return redirect('home')
 
 
+@login_required()
 def order(request):
     order_form = add_Order()
-    return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active', 'order_form': order_form})
+    full_company_name = _get_full_company_name(request)
+    return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active',
+                                                    'order_form': order_form, 'full_name': full_company_name})
 
 
+@login_required
 def account(request):
     return render(request, 'main/account.html', {'title': 'Личный кабинет', 'active_account': 'active'})
