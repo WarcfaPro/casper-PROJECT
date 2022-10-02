@@ -85,7 +85,7 @@ def account(request):
 
 def order_list(request):
     paginate_by = 2
-    p = Order.objects.all().filter(carrier_id=None, is_complete=False)
+    p = Order.objects.all().filter(carrier_id=None, is_complete=False).order_by('-id')
     paginator = Paginator(p, paginate_by)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
