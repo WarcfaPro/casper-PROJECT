@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .forms import RegForm, LoginForm, add_Order
+from .models import Order
 from .service import _order_form_save
 
 
@@ -79,3 +80,11 @@ def order(request):
 @login_required
 def account(request):
     return render(request, 'main/account.html', {'title': 'Личный кабинет', 'active_account': 'active'})
+
+
+def order_list(request):
+    paginate_by = 10
+    p = Order.objects.all()
+
+    return render(request, 'main/order_list.html', {'title': 'Список заказов',
+                                                    'active_order_list': 'active', 'orders': p.filter(carrier_id=None)})

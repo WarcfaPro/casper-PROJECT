@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+
+{%for item in orders%}
+<div class="form-control">
+    <div class="">
+        <ul>
+            <li>{{item.full_address}}</li>
+            <li>{{item.full_address_to}}</li>
+            <li>{{item.price}}</li>
+            <button type="submit">взять заказ</button>
+        </ul>
+    </div>
+</div>
+
+{%endfor%}
+{% endblock %}

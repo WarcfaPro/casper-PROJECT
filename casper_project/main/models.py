@@ -29,17 +29,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Order(models.Model):
-    company_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_author')
-    company_name = models.OneToOneField(User, on_delete=models.PROTECT)
+    company_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name='order_author')
+    company_name = models.ForeignKey(User, on_delete=models.PROTECT)
     address_city = models.CharField(max_length=50)
     address_street = models.CharField(max_length=100)
     full_address = models.CharField(max_length=150)
     address_city_to = models.CharField(max_length=50)
     address_street_to = models.CharField(max_length=100)
     full_address_to = models.CharField(max_length=150)
-
     price = models.CharField(max_length=100)
+    carrier_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name='order_carrier',
+                                   blank=True, null=True)
     is_complete = models.BooleanField(default=False, blank=True, null=True)
     is_payments = models.BooleanField(default=False, blank=True, null=True)
     data = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    data_complete = models.DateTimeField(auto_now=True, blank=True, null=True)
+    data_update = models.DateTimeField(auto_now=True, blank=True, null=True)
