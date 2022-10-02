@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .forms import RegForm, LoginForm, add_Order
-from .service import _get_full_company_name, _get_full_address, _order_form_save
+from .service import _order_form_save
 
 
 def index(request):
