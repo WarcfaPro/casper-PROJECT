@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .forms import RegForm, LoginForm, add_Order
-from .service import _get_full_company_name
+from .service import _get_full_company_name, _get_full_address, _order_form_save
 
 
 def index(request):
@@ -59,8 +59,20 @@ def logout_user(request):
 
 @login_required()
 def order(request):
-    order_form = add_Order()
     full_company_name = _get_full_company_name(request)
+    if request.method == 'POST':
+        order_form = add_Order(request.POST)
+        if order_form.is_valid():
+            _order_form_save(request, order_form)
+            messages.success(request, f'Заказ создан!')
+            return redirect('home')
+        else:
+            messages.warning(request, f'Проверьте введенные вами данные!')
+            order_form = add_Order(request.POST)
+            return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active',
+                                                            'order_form': order_form, 'full_name': full_company_name})
+    else:
+        order_form = add_Order()
     return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active',
                                                     'order_form': order_form, 'full_name': full_company_name})
 

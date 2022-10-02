@@ -4,7 +4,7 @@
 {% block content %}
 <div class="teams_form">
   <div class="container col-4">
-    <form action="{% url 'register' %}" method='POST' class="form-control">
+    <form action="{% url 'order' %}" method='POST' class="form-control">
         {% for field in order_form %}
         {% if field == order_form.company_name %}
             <div class="mb-3">
@@ -66,7 +66,4 @@
         }
     });
 </script>
-    {% csrf_token %}
-
-</form>
 {% endblock %}
