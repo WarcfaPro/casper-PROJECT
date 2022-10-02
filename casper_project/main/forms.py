@@ -28,7 +28,13 @@ class LoginForm(forms.Form):
 
 
 class add_Order(forms.ModelForm):
-    company_name = forms.CharField()
+    company_name = forms.CharField(max_length=100)
+    address_city = forms.CharField(max_length=50)
+    address_street = forms.CharField(max_length=100)
+    address_city_to = forms.CharField(max_length=50)
+    address_street_to = forms.CharField(max_length=100)
+    price = forms.CharField(max_length=100)
+
     class Meta:
         model = Order
         fields = '__all__'
