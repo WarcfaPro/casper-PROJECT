@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
