@@ -73,7 +73,7 @@ def order(request):
     else:
         order_form = add_Order()
     return render(request, 'main/order_form.html', {'title': 'Заказ', 'active_order': 'active',
-                                                    'order_form': order_form, 'full_name': full_company_name})
+                                                    'order_form': order_form})
 
 
 @login_required
