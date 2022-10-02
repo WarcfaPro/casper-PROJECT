@@ -12,6 +12,7 @@ def _get_full_address(city, street):
 def _order_form_save(request, order_form):
     orders = order_form.save(commit=False)
     orders.company_id = request.user
+    orders.company_name = request.user.company_name
     orders.full_address = _get_full_address(orders.address_city, orders.address_street)
     orders.full_address_to = _get_full_address(orders.address_city_to, orders.address_street_to)
     orders.save()

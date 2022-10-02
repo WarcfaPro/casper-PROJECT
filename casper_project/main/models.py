@@ -30,7 +30,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Order(models.Model):
     company_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name='order_author')
-    company_name = models.ForeignKey(User, on_delete=models.PROTECT)
+    company_name = models.CharField(max_length=100)
     address_city = models.CharField(max_length=50)
     address_street = models.CharField(max_length=100)
     full_address = models.CharField(max_length=150)
