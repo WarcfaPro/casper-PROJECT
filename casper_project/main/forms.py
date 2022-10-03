@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import User, Order
+from .models import User, Order, Order_wait_list
 
 
 class RegForm(UserCreationForm):
@@ -45,3 +45,15 @@ class UserChangeUpdate(UserChangeForm):
     class Meta:
         model = User
         fields = ('email',)
+
+
+class Add_Carrier_Order(forms.ModelForm):
+    queryset_o = Order.objects.all()
+    queryset_c = User.object.all()
+    order = forms.ModelChoiceField(queryset=queryset_o, widget=forms.HiddenInput(attrs={'id': 'order_id'}))
+    carrier = forms.ModelChoiceField(queryset=queryset_c, widget=forms.HiddenInput(attrs={'id': 'carrier_id'}))
+    carrier_price = forms.DecimalField(label='Ваша цена', max_digits=19, decimal_places=0)
+
+    class Meta:
+        model = Order_wait_list
+        fields = ('order', 'carrier', 'carrier_price')

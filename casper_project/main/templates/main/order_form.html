@@ -27,7 +27,7 @@
 
         {% csrf_token %}
             <div class=" container w-50">
-                <button class="btn btn-outline-success w-100" type="submit">Заказать</button>
+                <button id="button" class="btn btn-outline-success w-100" type="submit">Заказать</button>
             </div>
     </form>
   </div>
@@ -41,34 +41,39 @@
         token: "5424f5ae8c0e01d56e5c5b67623c9274b6444d8e",
         type: "ADDRESS",
         bounds: "city-settlement",
+        hint: false,
+        noSuggestionsHint: false,
         onSelect: function(suggestions) {
-            console.log(suggestions);
+
         }
     });
     $("#street").suggestions({
         token: "5424f5ae8c0e01d56e5c5b67623c9274b6444d8e",
         type: "ADDRESS",
+        hint: false,
+        noSuggestionsHint: false,
         bounds: "street-house",
         constraints: "#city",
         onSelect: function(suggestions) {
-            console.log(suggestions);
         }
     });
     $("#city_to").suggestions({
         token: "5424f5ae8c0e01d56e5c5b67623c9274b6444d8e",
         type: "ADDRESS",
         bounds: "city-settlement",
+        hint: false,
+        noSuggestionsHint: false,
         onSelect: function(suggestions) {
-            console.log(suggestions);
         }
     });
     $("#street_to").suggestions({
         token: "5424f5ae8c0e01d56e5c5b67623c9274b6444d8e",
         type: "ADDRESS",
         bounds: "street-house",
-        constraints: "#city",
+        hint: false,
+        noSuggestionsHint: false,
+        constraints: "#city_to",
         onSelect: function(suggestions) {
-            console.log(suggestions);
         }
     });
 </script>

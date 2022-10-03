@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
-from .forms import RegForm, LoginForm, add_Order
+from .forms import RegForm, LoginForm, add_Order, Add_Carrier_Order
 from .models import Order
 from .service import _order_form_save
 
@@ -85,11 +85,38 @@ def account(request):
 
 def order_list(request):
     paginate_by = 2
-    p = Order.objects.all().filter(carrier_id=None, is_complete=False).order_by('-id')
+    p = Order.objects.all().filter().exclude(company_id=request.user).exclude(
+        order_in_w_list__carrier_id=request.user.id).order_by('-id')
     paginator = Paginator(p, paginate_by)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    page_paginator = page_obj.has_other_pages()
+    if request.method == 'POST':
+        form = Add_Carrier_Order(request.POST, initial={
+            'carrier': request.user
+        })
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, f'Заявка оставлена!')
+            return redirect('order_list')
+        else:
+            messages.warning(request, f'Ошибочка повторите попытку!')
+            form = Add_Carrier_Order(request.POST, initial={
+                'carrier': request.user
+            })
+            return render(request, 'main/order_form.html', {'title': 'Список заказов',
+                                                            'active_order_list': 'active',
+                                                            'page_obj': page_obj,
+                                                            'page_paginator': page_paginator,
+                                                            'form': form})
+    else:
+        form = Add_Carrier_Order(initial={
+            'carrier': request.user
+        })
 
     return render(request, 'main/order_list.html', {'title': 'Список заказов',
                                                     'active_order_list': 'active',
-                                                    'page_obj': page_obj})
+                                                    'page_obj': page_obj,
+                                                    'page_paginator': page_paginator,
+                                                    'form': form})
