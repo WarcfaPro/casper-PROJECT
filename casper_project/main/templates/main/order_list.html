@@ -4,16 +4,31 @@
 {% block content %}
 
 {%for item in page_obj%}
-<div class="form-control">
-    <div class="">
+<div class="container">
+    <div class="wrapper">
         <ul>
             <li>{{item.full_address}}</li>
             <li>{{item.full_address_to}}</li>
             <li>{{item.price}}</li>
-            <button type="submit">взять заказ</button>
+            <form action="#" method="post">
+                {{form}}
+                {% csrf_token %}
+                <button id="submit_carrier_order" type="submit">взять заказ</button>
+            </form>
+
         </ul>
     </div>
 </div>
+<script>
+    $('#order_id').each(function (){
+        $(this).attr('id', 'order_id_{{item.pk}}');
+});
+    $(document).ready(function(){
+       $('#order_id_{{item.pk}}').val('{{item.pk}}')
+    });
+</script>
+<p>{{item.company_id}}</p>
+<p>{{item}}</p>
 {%endfor%}
 
 {% endblock %}
