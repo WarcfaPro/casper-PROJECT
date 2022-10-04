@@ -48,11 +48,17 @@ class UserChangeUpdate(UserChangeForm):
 
 
 class Add_Carrier_Order(forms.ModelForm):
-    queryset_o = Order.objects.all()
-    queryset_c = User.object.all()
-    order = forms.ModelChoiceField(queryset=queryset_o, widget=forms.HiddenInput(attrs={'id': 'order_id'}))
-    carrier = forms.ModelChoiceField(queryset=queryset_c, widget=forms.HiddenInput(attrs={'id': 'carrier_id'}))
+    queryset_o = Order.objects.all().filter()
+    queryset_c = User.object.all().filter()
+    order = forms.ModelChoiceField(queryset=queryset_o, widget=forms.HiddenInput())
+    carrier = forms.ModelChoiceField(queryset=queryset_c, widget=forms.HiddenInput())
     carrier_price = forms.DecimalField(label='Ваша цена', max_digits=19, decimal_places=0)
+
+    def __init__(self, *args, **kwargs):
+        super(Add_Carrier_Order, self).__init__(*args, **kwargs)
+        self.fields['order'].widget.attrs.update({
+            'value': '{{item}}'
+        })
 
     class Meta:
         model = Order_wait_list

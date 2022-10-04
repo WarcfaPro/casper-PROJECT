@@ -85,38 +85,33 @@ def account(request):
 
 def order_list(request):
     paginate_by = 2
-    p = Order.objects.all().filter().exclude(company_id=request.user).exclude(
-        order_in_w_list__carrier_id=request.user.id).order_by('-id')
+    p = Order.objects.all().order_by('-id').exclude(company=request.user).exclude(order_in_w_list__carrier=request.user)
     paginator = Paginator(p, paginate_by)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     page_paginator = page_obj.has_other_pages()
     if request.method == 'POST':
-        form = Add_Carrier_Order(request.POST, initial={
-            'carrier': request.user
-        })
+        form = Add_Carrier_Order(request.POST)
         if form.is_valid():
             form.save()
 
             messages.success(request, f'Заявка оставлена!')
             return redirect('order_list')
         else:
+            print(form.errors.values())
             messages.warning(request, f'Ошибочка повторите попытку!')
-            form = Add_Carrier_Order(request.POST, initial={
-                'carrier': request.user
-            })
-            return render(request, 'main/order_form.html', {'title': 'Список заказов',
+            form = Add_Carrier_Order(request.POST)
+            return render(request, 'main/order_list.html', {'title': 'Список заказов',
                                                             'active_order_list': 'active',
                                                             'page_obj': page_obj,
                                                             'page_paginator': page_paginator,
                                                             'form': form})
     else:
-        form = Add_Carrier_Order(initial={
-            'carrier': request.user
-        })
+        form = Add_Carrier_Order()
 
     return render(request, 'main/order_list.html', {'title': 'Список заказов',
                                                     'active_order_list': 'active',
                                                     'page_obj': page_obj,
                                                     'page_paginator': page_paginator,
-                                                    'form': form})
+                                                    'form': form,
+                                                    'query': p})

@@ -28,7 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Order(models.Model):
-    company_id = models.ForeignKey(User, on_delete=models.PROTECT, related_name='order_author')
+    company = models.ForeignKey(User, on_delete=models.PROTECT, related_name='order_author')
     company_name = models.CharField(max_length=100)
     address_city = models.CharField(max_length=50)
     address_street = models.CharField(max_length=100, blank=True, null=True)
@@ -37,12 +37,15 @@ class Order(models.Model):
     address_street_to = models.CharField(max_length=100, blank=True, null=True)
     full_address_to = models.CharField(max_length=150)
     price = models.DecimalField(verbose_name='Стоимость', max_digits=19, decimal_places=0, blank=True, null=True)
-    carrier_id = models.ForeignKey('Order_wait_list', on_delete=models.PROTECT, related_name='order_carrier',
-                                   blank=True, null=True)
+    carrier = models.ForeignKey('Order_wait_list', on_delete=models.PROTECT, related_name='order_carrier',
+                                   blank=True, null=True,)
     is_complete = models.BooleanField(default=False, blank=True, null=True)
     is_payments = models.BooleanField(default=False, blank=True, null=True)
     data = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     data_update = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.id}'
 
 
 class Order_wait_list(models.Model):
@@ -52,4 +55,4 @@ class Order_wait_list(models.Model):
     data_add_to_wait_list = models.DateTimeField(verbose_name='Дата создания заявки', auto_now_add=True)
 
     def __str__(self):
-        return f'{self.order}'
+        return f'{self.carrier}'
