@@ -3,7 +3,9 @@
 
 {% block content %}
 
-
+{%for i in query%}
+{{i.get}}
+{%endfor%}
 
 
 
@@ -16,7 +18,10 @@
             <li>{{item.full_address_to}}</li>
             <li>{{item.price}}</li>
             <form action="#" method="post">
-                {{form}}
+                {{form.carrier_price.label}}
+                {{form.carrier_price}}
+                <input type="hidden" name="carrier" value="{{request.user.pk}}"/>
+                <input type="hidden" name="order" value="{{item}}" />
                 {% csrf_token %}
                 <button id="submit_carrier_order" type="submit">взять заказ</button>
             </form>
@@ -24,16 +29,23 @@
         </ul>
     </div>
 </div>
-<script>
-    $('#order_id').each(function (){
-        $(this).attr('id', 'order_id_{{item.pk}}');
-});
-    $(document).ready(function(){
-       $('#order_id_{{item.pk}}').val('{{item.pk}}')
-    });
-</script>
+
 <p>{{item.company_id}}</p>
 <p>{{item}}</p>
 {%endfor%}
+{%if page_obj.has_other_pages%}
+<ul>
+    {% for page in page_obj.paginator.page_range %}
+    {% if page_obj.number == page %}
+    <li class="page-num-selected selected">{{page}}</li>
+    {%elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2%}
+    <li>
+        <a href="?page={{page}}">{{page}}</a>
+    </li>
+    {%endif%}
 
+    {%endfor%}
+</ul>
+{%endif%}
 {% endblock %}
+
