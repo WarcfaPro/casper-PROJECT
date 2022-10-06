@@ -90,6 +90,12 @@ def order_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     page_paginator = page_obj.has_other_pages()
+    if not request.user.is_authenticated:
+        messages.danger(request, f'Вам необходимо зарегистрироваться!')
+        return redirect('login')
+    if not request.user.is_carrier or request.user.is_verified:
+        messages.danger(request, f'Вы не являетесь перевозчиком!')
+        return redirect('home')
     if request.method == 'POST':
         form = Add_Carrier_Order(request.POST)
         if form.is_valid():
@@ -98,7 +104,6 @@ def order_list(request):
             messages.success(request, f'Заявка оставлена!')
             return redirect('order_list')
         else:
-            print(form.errors.values())
             messages.warning(request, f'Ошибочка повторите попытку!')
             form = Add_Carrier_Order(request.POST)
             return render(request, 'main/order_list.html', {'title': 'Список заказов',
@@ -115,3 +120,9 @@ def order_list(request):
                                                     'page_paginator': page_paginator,
                                                     'form': form,
                                                     'query': p})
+
+
+def Account_change(request):
+    return redirect(request, 'main/account_change', {
+        'title': 'Изменение данных', 'active_account': 'active'
+    })

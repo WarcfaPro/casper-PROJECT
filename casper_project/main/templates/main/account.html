@@ -2,11 +2,63 @@
 
 
 {% block content %}
+<div class="container">
+    <div class="main-body">
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
 
-
-
-
-{% if request.user.is_carrier == True %}
-    <label for=""><h1>IS CARRIER</h1></label>
-{% endif %}
+                      <a href="#" class="btn btn-primary">Ваши заказы</a>
+                      {%if request.user.is_carrier%}
+                      {%if request.user.is_verified%}
+                      <a href="#" class="btn btn-primary">Ваши заявки</a>
+                      {%endif%}{%endif%}
+                    <div class="col-sm-12">
+                      <a class="btn btn-primary" href="#">Изменить данные</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Название организации</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{request.user.company_name}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{request.user.email}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Телефон</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{request.user.phone}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                      <a href="#" class="btn btn-primary">стать перевозчиком</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
 {% endblock %}
