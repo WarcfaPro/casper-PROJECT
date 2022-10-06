@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
-from .forms import RegForm, LoginForm, add_Order, Add_Carrier_Order
+from .forms import RegForm, LoginForm, add_Order, Add_Carrier_Order, UserChangeUpdate
 from .models import Order
 from .service import _order_form_save
 
@@ -91,10 +91,10 @@ def order_list(request):
     page_obj = paginator.get_page(page_number)
     page_paginator = page_obj.has_other_pages()
     if not request.user.is_authenticated:
-        messages.danger(request, f'Вам необходимо зарегистрироваться!')
+        messages.warning(request, f'Вам необходимо зарегистрироваться!')
         return redirect('login')
-    if not request.user.is_carrier or request.user.is_verified:
-        messages.danger(request, f'Вы не являетесь перевозчиком!')
+    if not request.user.is_carrier or not request.user.is_verified:
+        messages.warning(request, f'Вы не являетесь перевозчиком!')
         return redirect('home')
     if request.method == 'POST':
         form = Add_Carrier_Order(request.POST)
@@ -123,7 +123,39 @@ def order_list(request):
 
 
 @login_required
-def Account_change(request):
-    return redirect(request, 'main/account_change', {
-        'title': 'Изменение данных', 'active_account': 'active'
+def account_dc(request):
+    if request.method == "POST":
+        form = UserChangeUpdate(request.POST, instance=request.user)
+        if form.is_valid:
+            form.save()
+            messages.success(request, f'Данные сохранены!')
+            return redirect('account')
+        else:
+            messages.warning(request, f'Ошибочка повторите попытку!')
+            form = Add_Carrier_Order(request.POST, instance=request.user)
+            return render(request, 'main/account_change.html', {
+                'title': 'Изменение данных', 'active_account': 'active', 'form': form, })
+    else:
+
+        form = UserChangeUpdate(instance=request.user)
+        return render(request, 'main/account_change.html', {
+            'title': 'Изменение данных', 'active_account': 'active', 'form': form,
+        })
+
+
+@login_required
+def your_order_list(request):
+    paginate_by = 2
+    p = Order.objects.all().order_by('-id').filter(company=request.user)
+    paginator = Paginator(p, paginate_by)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_paginator = page_obj.has_other_pages()
+    if request.method == 'POST':
+        Order.objects.filter(pk=request.POST['order']).delete()
+        return render(request, 'main/user_order_list.html', {
+            'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
+        })
+    return render(request, 'main/user_order_list.html', {
+        'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
     })

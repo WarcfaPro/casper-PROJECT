@@ -1,0 +1,49 @@
+
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+
+
+
+{%for item in page_obj%}
+<div class="container">
+    <div class="wrapper">
+        <ul>
+            <li>{{item.full_address}}</li>
+            <li>{{item.full_address_to}}</li>
+            <li>{{item.price}}</li>
+            <form action="#" method="post">
+                <input type="hidden" name="order" value="{{item}}" />
+                {% csrf_token %}
+                <button id="submit_carrier_order" type="submit">Удалить заказ</button>
+            </form>
+
+        </ul>
+    </div>
+</div>
+{%endfor%}
+
+
+
+{%if page_obj.has_other_pages%}
+<ul>
+    {% for page in page_obj.paginator.page_range %}
+    {% if page_obj.number == page %}
+    <li class="page-num-selected selected">{{page}}</li>
+    {%elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2%}
+    <li>
+        <a href="?page={{page}}">{{page}}</a>
+    </li>
+    {%endif%}
+
+    {%endfor%}
+</ul>
+{%endif%}
+
+
+
+
+
+
+{% endblock %}

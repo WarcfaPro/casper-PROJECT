@@ -44,7 +44,7 @@ class add_Order(forms.ModelForm):
 class UserChangeUpdate(UserChangeForm):
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('email', 'phone')
 
 
 class Add_Carrier_Order(forms.ModelForm):
@@ -63,3 +63,5 @@ class Add_Carrier_Order(forms.ModelForm):
     class Meta:
         model = Order_wait_list
         fields = ('order', 'carrier', 'carrier_price')
+
+

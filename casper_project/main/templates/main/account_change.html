@@ -1,6 +1,20 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
+<form action="#" method="post">
 
+<div class="container">
+  <div class="wrapper">
+    <form action="{% url 'account_dc' %}" method='POST' class="form-inline my-2 my-lg-0">
+        <div><div>{{form.email.label}}</div>
+        {{form.email}}</div>
+        <div><div>{{form.phone.label}}</div>
+        {{form.phone}}</div>
+        {% csrf_token %}
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+</form>
 
 {% endblock %}

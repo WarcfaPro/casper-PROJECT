@@ -10,13 +10,13 @@
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
 
-                      <a href="#" class="btn btn-primary">Ваши заказы</a>
+                      <a href="{%url 'y_o_l'%}" class="btn btn-primary">Ваши заказы</a>
                       {%if request.user.is_carrier%}
                       {%if request.user.is_verified%}
                       <a href="#" class="btn btn-primary">Ваши заявки</a>
                       {%endif%}{%endif%}
                     <div class="col-sm-12">
-                      <a class="btn btn-primary" href="#">Изменить данные</a>
+                      <a class="btn btn-primary" href="{% url 'account_dc'%}">Изменить данные</a>
                     </div>
                   </div>
                 </div>
