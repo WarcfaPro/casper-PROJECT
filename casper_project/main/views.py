@@ -122,6 +122,7 @@ def order_list(request):
                                                     'query': p})
 
 
+@login_required
 def Account_change(request):
     return redirect(request, 'main/account_change', {
         'title': 'Изменение данных', 'active_account': 'active'
