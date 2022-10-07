@@ -10,7 +10,7 @@ from .service import _order_form_save
 
 
 def index(request):
-    return render(request, 'main/index.html', {'title': 'Trans Support', 'active_home': 'active'})
+    return render(request, 'main/index.html', {'title': 'Transport Support', 'active_home': 'active'})
 
 
 def register(request):
