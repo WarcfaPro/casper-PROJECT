@@ -1,0 +1,54 @@
+
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+
+
+
+{%for item in page_obj%}
+<div class="container">
+    <div class="wrapper">
+        <ul>
+            <li><p>Заказ №: {{item.order}}</p></li>
+            <li><p>Стоимость перевозки: {{item.carrier_price}}</p></li>
+            <form action="#" method="post">
+                <input type="hidden" name="order" value="{{item.pk}}" />
+                {% csrf_token %}
+                <button id="submit_carrier_order" type="submit">Удалить заявку</button>
+            </form>
+
+            <button type="submit">
+                <input type="hidden" name="order_id" value="{{item.pk}}">
+                <a href="{%url 'order_detail' item.pk%}">Заявки</a>
+            </button>
+
+        </ul>
+    </div>
+</div>
+<hr>
+{%endfor%}
+
+
+
+{%if page_obj.has_other_pages%}
+<ul>
+    {% for page in page_obj.paginator.page_range %}
+    {% if page_obj.number == page %}
+    <li class="page-num-selected selected">{{page}}</li>
+    {%elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2%}
+    <li>
+        <a href="?page={{page}}">{{page}}</a>
+    </li>
+    {%endif%}
+
+    {%endfor%}
+</ul>
+{%endif%}
+
+
+
+
+
+
+{% endblock %}

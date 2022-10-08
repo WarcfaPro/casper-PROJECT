@@ -85,7 +85,8 @@ def account(request):
 
 def order_list(request):
     paginate_by = 2
-    p = Order.objects.all().order_by('-id').exclude(company=request.user).exclude(order_in_w_list__carrier=request.user)
+    p = Order.objects.all().order_by('-id').exclude(company=request.user).exclude(
+        order_in_w_list__carrier=request.user).exclude(is_hidden=True)
     paginator = Paginator(p, paginate_by)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -146,13 +147,13 @@ def account_dc(request):
 @login_required
 def your_order_list(request):
     paginate_by = 2
-    p = Order.objects.all().order_by('-id').filter(company=request.user)
+    p = Order.objects.all().order_by('-id').filter(company=request.user, is_hidden=False)
     paginator = Paginator(p, paginate_by)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     page_paginator = page_obj.has_other_pages()
     if request.method == 'POST':
-        Order.objects.filter(pk=request.POST['order']).delete()
+        Order.objects.filter(pk=request.POST['order']).update(is_hidden=True)
         return render(request, 'main/user_order_list.html', {
             'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
         })
@@ -170,7 +171,28 @@ def order_detail(request, order_id):
     page_paginator = page_obj.has_other_pages()
     if request.method == 'POST':
         Order.objects.all().filter(pk=order_id).update(carrier=request.POST['carrier'], price=request.POST['price'])
+        query.filter(pk=request.POST['carrier']).update(is_selected=True)
+        query = Order_wait_list.objects.all().filter(order=order_id).exclude(is_selected=True)
+        query.delete()
         return redirect('y_o_l')
     return render(request, 'main/order_detail.html', {
-            'title': f'заказ №{order_id}', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
+        'title': f'заказ №{order_id}', 'active_account': 'active', 'page_paginator': page_paginator,
+        'page_obj': page_obj
+    })
+
+
+def user_carrier_order_list(request):
+    paginate_by = 2
+    p = Order_wait_list.objects.all().order_by('-id').filter(carrier=request.user)
+    paginator = Paginator(p, paginate_by)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_paginator = page_obj.has_other_pages()
+    if request.method == 'POST':
+        Order_wait_list.objects.filter(pk=request.POST['order']).delete()
+        return render(request, 'main/user_order_carrier_list.html', {
+            'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
         })
+    return render(request, 'main/user_order_carrier_list.html', {
+        'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
+    })

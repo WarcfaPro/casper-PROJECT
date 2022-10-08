@@ -13,5 +13,6 @@ urlpatterns = [
     path('account/change', views.account_dc, name='account_dc'),
     path('account/order', views.your_order_list, name='y_o_l'),
     path('account/order/<order_id>', views.order_detail, name='order_detail'),
+    path('account/carrier/order', views.user_carrier_order_list, name='carrier'),
 
 ]

@@ -16,6 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
     is_superuser = models.BooleanField(default=False, verbose_name='Суперпользователь')
     is_verified = models.BooleanField(default=False, verbose_name='Верифицирован')
+    email_verified = models.BooleanField(default=False, verbose_name='Верификация email')
 
     object = UserManager()
 
@@ -37,12 +38,13 @@ class Order(models.Model):
     address_street_to = models.CharField(max_length=100, blank=True, null=True)
     full_address_to = models.CharField(max_length=150)
     price = models.DecimalField(verbose_name='Стоимость', max_digits=19, decimal_places=0, blank=True, null=True)
-    carrier = models.ForeignKey('Order_wait_list', on_delete=models.PROTECT, related_name='order_carrier',
+    carrier = models.ForeignKey('Order_wait_list', on_delete=models.SET_NULL, related_name='order_carrier',
                                    blank=True, null=True,)
     is_complete = models.BooleanField(default=False, blank=True, null=True)
     is_payments = models.BooleanField(default=False, blank=True, null=True)
     data = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     data_update = models.DateTimeField(auto_now=True, blank=True, null=True)
+    is_hidden = models.BooleanField(default=False, verbose_name='Скрыт от пользователя (думает что удален!)')
 
     def __str__(self):
         return f'{self.id}'
@@ -53,6 +55,7 @@ class Order_wait_list(models.Model):
     carrier = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Доставщик', related_name='carrier_order')
     carrier_price = models.DecimalField(verbose_name='Стоимость', max_digits=19, decimal_places=0)
     data_add_to_wait_list = models.DateTimeField(verbose_name='Дата создания заявки', auto_now_add=True)
+    is_selected = models.BooleanField(default=False, verbose_name='Выбрана заказчиком')
 
     def __str__(self):
         return f'{self.carrier}'
