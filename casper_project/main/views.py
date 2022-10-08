@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
 from .forms import RegForm, LoginForm, add_Order, Add_Carrier_Order, UserChangeUpdate
-from .models import Order
+from .models import Order, Order_wait_list
 from .service import _order_form_save
 
 
@@ -159,3 +159,18 @@ def your_order_list(request):
     return render(request, 'main/user_order_list.html', {
         'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
     })
+
+
+def order_detail(request, order_id):
+    paginate_by = 2
+    query = Order_wait_list.objects.all().order_by('carrier_price').filter(order=order_id)
+    paginator = Paginator(query, paginate_by)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_paginator = page_obj.has_other_pages()
+    if request.method == 'POST':
+        Order.objects.all().filter(pk=order_id).update(carrier=request.POST['carrier'], price=request.POST['price'])
+        return redirect('y_o_l')
+    return render(request, 'main/order_detail.html', {
+            'title': f'заказ №{order_id}', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
+        })

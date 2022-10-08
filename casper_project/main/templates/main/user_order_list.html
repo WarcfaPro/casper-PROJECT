@@ -10,18 +10,30 @@
 <div class="container">
     <div class="wrapper">
         <ul>
-            <li>{{item.full_address}}</li>
-            <li>{{item.full_address_to}}</li>
-            <li>{{item.price}}</li>
+            <li><p>Заказ №: {{item.id}}</p></li>
+            <li><p>Откуда: {{item.full_address}}</p></li>
+            <li><p>Куда: {{item.full_address_to}}</p></li>
+            <li><p>Стоимость перевозки: {{item.price}}</p></li>
+            {% if item.carrier != None %}
+            <li><p>Ваш перевозчик: {{item.carrier}}</p></li>
+            {% endif %}
+            {% if item.carrier == None %}
             <form action="#" method="post">
                 <input type="hidden" name="order" value="{{item}}" />
                 {% csrf_token %}
                 <button id="submit_carrier_order" type="submit">Удалить заказ</button>
             </form>
 
+            <button type="submit">
+                <input type="hidden" name="order_id" value="{{item.pk}}">
+                <a href="{%url 'order_detail' item.pk%}">Заявки</a>
+            </button>
+            {% endif %}
+
         </ul>
     </div>
 </div>
+<hr>
 {%endfor%}
 
 
