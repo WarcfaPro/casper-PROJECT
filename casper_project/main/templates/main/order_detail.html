@@ -1,16 +1,33 @@
 {% extends 'main/base.html' %}
 {% block content %}
-
-{% for item in page_obj %}
+{%for item in page_obj%}
 <div class="container">
-    <p>{{ item.carrier }}</p>
-    <p>{{ item.carrier_price }}</p>
+    <div class="wrapper">
+        <ul>
+            <li><p>Заказ №: {{item.order.id}}</p></li>
+            <li><p>Название организации: {{item.order.company_name}}</p></li>
+            <li><p>Номер телефона заказчика: {{item.order.company.phone}}</p></li>
+            <li><p>Email: {{item.order.company.email}}</p></li>
+            <li><p>Откуда: {{item.order.full_address}}</p></li>
+            <li><p>Куда: {{item.order.full_address_to}}</p></li>
+            <li><p>Стоимость перевозки: {{item.order.price}}</p></li>
+            {% if item.order.carrier != None %}
+            <li><p>Перевозчик: {{item.order.carrier}}</p></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% if item.order.carrier == None %}
+    <p>Заказчик: {{ item.carrier }}</p>
+    <p>Его цена: {{ item.carrier_price }}</p>
+        {% if request.user == item.order.company %}
     <form action="#" method="post">
         <input type="hidden" name="carrier" value="{{item.id}}">
         <input type="hidden" name="price" value="{{item.carrier_price}}">
         <button type="submit">Выбрать заказчика</button>
         {% csrf_token %}
     </form>
+        {% endif %}
+    {% endif %}
 </div>
 {% endfor %}
 

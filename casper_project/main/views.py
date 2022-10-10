@@ -164,20 +164,22 @@ def your_order_list(request):
 
 def order_detail(request, order_id):
     paginate_by = 2
-    query = Order_wait_list.objects.all().order_by('carrier_price').filter(order=order_id)
+    query = Order_wait_list.objects.all().select_related('order').select_related('carrier').order_by(
+        'carrier_price').filter(order=order_id)
     paginator = Paginator(query, paginate_by)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     page_paginator = page_obj.has_other_pages()
+    f = Order.objects.all().filter(pk=order_id)
     if request.method == 'POST':
-        Order.objects.all().filter(pk=order_id).update(carrier=request.POST['carrier'], price=request.POST['price'])
+        f.update(carrier=request.POST['carrier'], price=request.POST['price'])
         query.filter(pk=request.POST['carrier']).update(is_selected=True)
         query = Order_wait_list.objects.all().filter(order=order_id).exclude(is_selected=True)
         query.delete()
         return redirect('y_o_l')
     return render(request, 'main/order_detail.html', {
         'title': f'заказ №{order_id}', 'active_account': 'active', 'page_paginator': page_paginator,
-        'page_obj': page_obj
+        'page_obj': page_obj, 'f': f,
     })
 
 
@@ -191,7 +193,8 @@ def user_carrier_order_list(request):
     if request.method == 'POST':
         Order_wait_list.objects.filter(pk=request.POST['order']).delete()
         return render(request, 'main/user_order_carrier_list.html', {
-            'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj
+            'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator,
+            'page_obj': page_obj
         })
     return render(request, 'main/user_order_carrier_list.html', {
         'title': 'Ваши заказы', 'active_account': 'active', 'page_paginator': page_paginator, 'page_obj': page_obj

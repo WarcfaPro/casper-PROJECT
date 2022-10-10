@@ -12,15 +12,18 @@
         <ul>
             <li><p>Заказ №: {{item.order}}</p></li>
             <li><p>Стоимость перевозки: {{item.carrier_price}}</p></li>
+            {% if item.is_selected == False %}
             <form action="#" method="post">
                 <input type="hidden" name="order" value="{{item.pk}}" />
                 {% csrf_token %}
                 <button id="submit_carrier_order" type="submit">Удалить заявку</button>
             </form>
+            {% else %}
+            <p>Ваша заявка принята!</p>
+            {% endif %}
 
             <button type="submit">
-                <input type="hidden" name="order_id" value="{{item.pk}}">
-                <a href="{%url 'order_detail' item.pk%}">Заявки</a>
+                <a href="{%url 'order_detail' item.order%}">Подробнее</a>
             </button>
 
         </ul>
